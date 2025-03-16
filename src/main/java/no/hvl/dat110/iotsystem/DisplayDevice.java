@@ -13,18 +13,27 @@ public class DisplayDevice {
 		
 		System.out.println("Display starting ...");
 		
-		// TODO - START
-				
-		// create a client object and use it to
-		
-		// - connect to the broker - use "display" as the username
-		// - create the temperature topic on the broker
-		// - subscribe to the topic
-		// - receive messages on the topic
-		// - unsubscribe from the topic
-		// - disconnect from the broker
-		
-		// TODO - END
+		// Opprettar klient og koblee til broker
+        Client client = new Client("display", Common.BROKERHOST, Common.BROKERPORT);
+        client.connect();
+
+        // Oppretta temperatur-topic
+        client.createTopic("temperature");
+
+        // Abonnera på temperatur-topic
+        client.subscribe("temperature");
+
+        // Mottar COUNT meldinger
+        for (int i = 0; i < COUNT; i++) {
+            PublishMsg msg = (PublishMsg) client.receive();
+            System.out.println("DISPLAY: " + msg.getMessage());
+        }
+
+        // Avsluttar abonnement
+        client.unsubscribe("temperature");
+
+        // Kobla frå broker
+        client.disconnect();
 		
 		System.out.println("Display stopping ... ");
 		
